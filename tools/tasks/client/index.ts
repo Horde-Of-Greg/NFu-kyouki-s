@@ -83,19 +83,6 @@ async function copyClientUpdateNotes() {
 }
 
 /**
- * Copies the changelog file.
- */
-async function copyClientChangelog() {
-	if (shouldSkipChangelog()) return;
-
-	return promiseStream(
-		src(upath.join(buildConfig.buildDestinationDirectory, "CHANGELOG.md")).pipe(
-			dest(clientDestDirectory),
-		),
-	);
-}
-
-/**
  * Copies modpack overrides.
  */
 async function copyClientOverrides() {
@@ -238,7 +225,6 @@ export default series(
 	exportModpackManifest,
 	copyClientLicense,
 	copyClientOverrides,
-	copyClientChangelog,
 	copyClientUpdateNotes,
 	fetchModList,
 );

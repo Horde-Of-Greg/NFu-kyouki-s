@@ -227,19 +227,6 @@ async function copyServerUpdateNotes() {
 }
 
 /**
- * Copies the changelog file.
- */
-async function copyServerChangelog() {
-	if (shouldSkipChangelog()) return;
-
-	return promiseStream(
-		src(upath.join(buildConfig.buildDestinationDirectory, "CHANGELOG.md")).pipe(
-			dest(serverDestDirectory),
-		),
-	);
-}
-
-/**
  * Copies files from ./launchscripts into dest folder and processes them using mustache.
  *
  * Replaces jvmArgs, minRAM, maxRAM and forgeJar.
@@ -283,7 +270,6 @@ export default series(
 	copyServerOverrides,
 	copyServerFiles,
 	copyServerLicense,
-	copyServerChangelog,
 	copyServerUpdateNotes,
 	processLaunchscripts,
 );
