@@ -11,24 +11,12 @@ on:
         description: The Release Type.
         required: true
         type: choice
-        default: 'Release'
+        default: 'Cutting Edge Build'
         options:
           - 'Release'
           - 'Beta Release'
           - 'Alpha Release'
           - 'Cutting Edge Build'
-      changelog_url:
-        description: Where to download the Changelog File from. See CONTRIBUTING.md for more information.
-        required: false
-        type: string
-      changelog_cf_url:
-        description: Where to download the CF Changelog File from. See CONTRIBUTING.md for more information.
-        required: false
-        type: string
-      changelog_branch:
-        description: Branch to download changelog Files from. See CONTRIBUTING.md for more information.
-        required: false
-        type: string
       compare_tag:
         description: Tag(s) to compare against. If specifying multiple, separate by commas. (Spaces allowed). See CONTRIBUTING.md for more information.
         required: false
@@ -37,11 +25,6 @@ on:
         description: Whether to upload each zip (Client, Server, Lang) and the changelogs separately. If not set, will just upload all six files into one artifact (Built Pack).
         required: true
         type: boolean
-      skip_changelog:
-        description: Whether to skip changelog generation.
-        type: boolean
-        default: false
-        required: true
 
   workflow_call:
     inputs:
@@ -54,18 +37,6 @@ on:
         required: false
         default: Release
         type: string
-      changelog_url:
-        description: Where to download the Changelog File from. See CONTRIBUTING.md for more information.
-        required: false
-        type: string
-      changelog_cf_url:
-        description: Where to download the CF Changelog File from. See CONTRIBUTING.md for more information.
-        required: false
-        type: string
-      changelog_branch:
-        description: Branch to download changelog Files from. See CONTRIBUTING.md for more information.
-        required: false
-        type: string
       compare_tag:
         description: Tag to compare to. See CONTRIBUTING.md for more information.
         required: false
@@ -73,7 +44,7 @@ on:
       separate_upload:
         description: Whether to upload each zip (Client, Server & Lang) and the changelogs separately. If not set, will just upload all five files into one artifact (Built Pack).
         required: false
-        default: false
+        default: true
         type: boolean
       head_ref:
         type: string
@@ -81,19 +52,11 @@ on:
       true_sha:
         type: string
         required: false
-      skip_changelog:
-        description: Whether to skip changelog generation.
-        type: boolean
-        default: false
-        required: false
-
 env:
   GITHUB_TAG: ${{ inputs.tag }}
   RELEASE_TYPE: ${{ inputs.release_type }}
   HEAD_REF: ${{ inputs.head_ref }}
   TRUE_SHA: ${{ inputs.true_sha }}
-  SKIP_CHANGELOG: ${{ inputs.skip_changelog }}
-
 jobs:
   buildSingle:
     name: Build Pack (${{ inputs.tag }})
@@ -151,9 +114,6 @@ jobs:
         run: npm run gulp
         env:
           CFCORE_API_TOKEN: ${{ secrets.CFCORE_API_TOKEN }}
-          CHANGELOG_BRANCH: ${{ inputs.changelog_branch }}
-          CHANGELOG_URL: ${{ inputs.changelog_url }}
-          CHANGELOG_CF_URL: ${{ inputs.changelog_cf_url }}
           COMPARE_TAG: ${{ inputs.compare_tag }}
 
       - name: Upload All Files
@@ -217,26 +177,6 @@ jobs:
         working-directory: ./tools
         run: npm run gulp makeArtifactNames
 
-      - name: Make Changelogs
-        if: ${{ !inputs.skip_changelog }}
-        working-directory: ./tools
-        run: npm run gulp buildChangelog
-        env:
-          CFCORE_API_TOKEN: ${{ secrets.CFCORE_API_TOKEN }}
-          CHANGELOG_BRANCH: ${{ inputs.changelog_branch }}
-          CHANGELOG_URL: ${{ inputs.changelog_url }}
-          CHANGELOG_CF_URL: ${{ inputs.changelog_cf_url }}
-          COMPARE_TAG: ${{ inputs.compare_tag }}
-
-      - name: Upload Changelogs
-        if: ${{ !inputs.skip_changelog }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: Changelogs
-          path: ./build/*.md
-          if-no-files-found: error
-          compression-level: 9
-
   buildClient:
     name: Build Pack Client (${{ inputs.tag }})
     runs-on: ubuntu-latest
@@ -270,19 +210,11 @@ jobs:
         working-directory: ./tools
         run: npm ci
 
-      - name: Download Changelog Artifacts
-        if: ${{ !inputs.skip_changelog }}
-        uses: actions/download-artifact@v4
-        with:
-          name: Changelogs
-          path: ./build/
-
       - name: Build Client
         working-directory: ./tools
         run: npm run gulp buildClient
         env:
           CFCORE_API_TOKEN: ${{ secrets.CFCORE_API_TOKEN }}
-          MADE_CHANGELOG: true # Changelog Already Exists
 
       - name: Upload Client Zip
         uses: actions/upload-artifact@v4
@@ -334,79 +266,16 @@ jobs:
         working-directory: ./tools
         run: npm ci
 
-      - name: Download Changelog Artifacts
-        if: ${{ !inputs.skip_changelog }}
-        uses: actions/download-artifact@v4
-        with:
-          name: Changelogs
-          path: ./build/
-
       - name: Build Server
         working-directory: ./tools
         run: npm run gulp buildServer
         env:
           CFCORE_API_TOKEN: ${{ secrets.CFCORE_API_TOKEN }}
-          MADE_CHANGELOG: true # Changelog Already Exists
 
       - name: Upload Server Zip
         uses: actions/upload-artifact@v4
         with:
           name: ${{ needs.makeNames.outputs.server }}
           path: ./build/server/**/*
-          if-no-files-found: error
-          compression-level: 9
-
-  buildLang:
-    name: Build Pack Lang (${{ inputs.tag }})
-    runs-on: ubuntu-latest
-    if: ${{ inputs.separate_upload }}
-    needs: makeNames
-    steps:
-      - name: Checkout Ref
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ inputs.tag }}
-
-      - name: Restore NPM Cached Files
-        uses: actions/cache@v4
-        id: npm-cache
-        with:
-          path: |
-            ~/.npm
-            ./tools/node_modules
-          key: ${{ runner.os }}-npm-${{ hashFiles('./tools/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-npm-
-
-      - name: Setup NodeJS v20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          check-latest: true
-
-      - name: Setup NPM Packages
-        if: steps.npm-cache.outputs.cache-hit != 'true'
-        working-directory: ./tools
-        run: npm ci
-
-      - name: Download Changelog Artifacts
-        if: ${{ !inputs.skip_changelog }}
-        uses: actions/download-artifact@v4
-        with:
-          name: Changelogs
-          path: ./build/
-
-      - name: Build Lang
-        working-directory: ./tools
-        run: npm run gulp buildLang
-        env:
-          CFCORE_API_TOKEN: ${{ secrets.CFCORE_API_TOKEN }}
-          MADE_CHANGELOG: true # Changelog Already Exists
-
-      - name: Upload Lang Zip
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ needs.makeNames.outputs.lang }}
-          path: ./build/lang/**/*
           if-no-files-found: error
           compression-level: 9
