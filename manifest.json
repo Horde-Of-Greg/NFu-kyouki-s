@@ -757,22 +757,22 @@
     {
       "projectID": 623955,
       "fileID": 5751930,
-      "required": true,
+      "required": true
     },
     {
       "projectID": 1101263,
       "fileID": 6314013,
-      "required": true,
+      "required": true
     },
     {
       "projectID": 1121489,
       "fileID": 5814089,
-      "required": true,
+      "required": true
     },
     {
       "projectID": 239236,
       "fileID": 2560363,
-      "required": true,
-    },
+      "required": true
+    }
   ]
 }
