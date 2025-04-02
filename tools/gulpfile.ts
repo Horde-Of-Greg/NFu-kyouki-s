@@ -10,10 +10,6 @@ export const updateFilesIssue = transformFiles.updateFilesIssue;
 export const updateFilesLabsVersion = transformFiles.updateFilesVersion;
 export const updateFilesMainMenu = transformFiles.updateFilesMainMenu;
 export const updateFilesAll = transformFiles.updateAll;
-
-import * as changelog from "./tasks/changelog/index.ts";
-export const createChangelog = changelog.createRootChangelog;
-
 import * as sharedTasks from "./tasks/shared/index.ts";
 import clientTasks from "./tasks/client/index.ts";
 import serverTasks from "./tasks/server/index.ts";
@@ -39,7 +35,6 @@ export const buildAll = gulp.series(
 		gulp.series(modTasks.downloadSharedAndServer, serverTasks),
 	),
 );
-export const buildChangelog = sharedTasks.buildChangelog;
 
 import { extractTypoCheckFiles } from "#tasks/helpers/langExtract.ts";
 export const buildTypoCheck = gulp.series(
