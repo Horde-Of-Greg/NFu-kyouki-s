@@ -12,7 +12,7 @@
 </h1>
 
 ## Features:
-- GregTech Community Edition Unofficial, and its related mods, which are actively developed
+- GregTech Community Edition Unofficial, and its related mods, which are actively developed hello, i think im in now
 - Updated quests, progression and balance changes
 - Overhauled circuit progression closely following CEu stock
 - Multiblock versions of nearly all machines, including EBF, Freezer and DT, processing up to 256 recipes in parallel
