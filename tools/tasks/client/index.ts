@@ -13,7 +13,6 @@ import dedent from "dedent-js";
 import {
 	cleanupVersion,
 	promiseStream,
-	shouldSkipChangelog,
 } from "#utils/util.ts";
 
 async function clientCleanUp() {

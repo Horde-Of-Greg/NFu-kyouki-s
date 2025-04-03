@@ -11,8 +11,7 @@ import {
 	downloadOrRetrieveFileDef,
 	getForgeJar,
 	getVersionManifest,
-	promiseStream,
-	shouldSkipChangelog,
+	promiseStream
 } from "#utils/util.ts";
 import {
 	modDestDirectory,
