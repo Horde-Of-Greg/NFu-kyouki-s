@@ -14,7 +14,7 @@ This fork was originally made for easier updates and installing, the project mig
 
 :D 
 
-I am happy to play NomifactoryCEu, special thanks to NomiCEu dev team, Exa, MkcTao and HOG
+I am happy to play NomifactoryCEu, special thanks to NomiCEu dev team, Exa, MkcTao, addons' authors and HOG
 
 
 <p align="center"><img src="https://raw.githubusercontent.com/Nomi-CEu/Branding/refs/heads/main/Nomi%20CEu/Logo/256x/logo-normal.png" alt="Logo"></p>
