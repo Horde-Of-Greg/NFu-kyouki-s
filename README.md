@@ -1,3 +1,22 @@
+# <h1 align="center">NomifactoryCEu: kyoumei Edition
+
+Welcome to NomifactoryCEu: kyoumei Edition, this is a fork of <a href="https://github.com/Nomi-CEu/Nomi-CEu"> NomifactoryCEu</a>, with extra spices which I (kyouki) enjoyed playing. This fork aim to make some mechanics of the pack a little bit more complex and adding more features as well as expanding the endgame (Past UHV)
+
+## Notable Changes:
+- Forced Hard/Expert Mode
+- AE2 channel mechanic enabled
+- Disabling item/fluid conduits and FE/RF to EU conversion
+- Extra addons such as AE2 Crafting Tree Legacy, AE2FCR, ZBGT
+- Many more will be added/tweaked to make the pack interesting!
+
+This fork was originally made for easier updates and installing, the project might not be very active
+
+
+:D 
+
+I am happy to play NomifactoryCEu, special thanks to NomiCEu dev team, Exa, MkcTao and HOG
+
+
 <p align="center"><img src="https://raw.githubusercontent.com/Nomi-CEu/Branding/refs/heads/main/Nomi%20CEu/Logo/256x/logo-normal.png" alt="Logo"></p>
 <h1 align="center">Nomifactory CEu</h1>
 <p align="center"><b><i>Fork of <a href="https://github.com/Nomifactory/Nomifactory"> Nomifactory</a>, using <a href="https://github.com/GregTechCEu/GregTech"> GregTech CEu</a> and its related mods.</i></b></p>
@@ -12,7 +31,7 @@
 </h1>
 
 ## Features:
-- GregTech Community Edition Unofficial, and its related mods, which are actively developed testing attention please aaaaaaa, hold on, one more step only
+- GregTech Community Edition Unofficial, and its related mods, which are actively developed 
 - Updated quests, progression and balance changes
 - Overhauled circuit progression closely following CEu stock
 - Multiblock versions of nearly all machines, including EBF, Freezer and DT, processing up to 256 recipes in parallel
